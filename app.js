@@ -1,3 +1,4 @@
+// Functions
 const rand = (max) => Math.floor(Math.random() * max);
 
 const shuffle = (a) => {
@@ -31,3 +32,130 @@ const changeBrightness = (factor, sprite) => {
     spriteOutput;
 }    
 
+const displayVictoryMess = (moves) => {
+  document.getElementById('moves').innerHTML = `You Moved ${moves} Steps!`;
+  toggleVisibility("message-container");
+}
+
+const toggleVisiblity = (id) => {
+  document.getElementById(id).style.visibility == "visible" ? document.getElementById(id).style.visibility = "hidden" : document.getElementById(id).style.visibility = "visible";
+}
+
+const maze = (w, h) => {
+  let mazeMap;
+  let width = w;
+  let height = h;
+  let startCoord, endCoord;
+  let dirs = ["n", "w", "e", "s"];
+  let modDir = {
+    n: {
+      y: -1,
+      x: 0,
+      o: "s"
+    },
+    s: {
+      y: 1,
+      x: 0,
+      o: "n"
+    },
+    e: {
+      y: 0,
+      x: 1,
+      o: "w"
+    },
+    w: {
+      y: 0,
+      x: -1,
+      o: "e"
+    }
+  
+  } 
+  
+  this.map = () => {
+    return mazeMap;
+  };
+  this.startCoord = () => {
+    return startCoord;
+  };
+  this.endCoord = () => {
+    return endCoord;
+  };
+
+  const genMap = () => {
+    mazeMap = new Array(height);
+    for (y = 0; y < height; y++) {
+      mazeMap[y] = new Array(width);
+      for (x = 0; x < width; ++x) {
+        mazeMap[y][x] = {
+          n: false,
+          s: false,
+          e: false,
+          w: false,
+          visited: false,
+          priorPos: null
+        };
+     }
+    }  
+  }
+}
+
+const defineMaze = () => {
+  let isComp = false;
+  let move = false;
+  let cellsVisited = 1;
+  let numLoops = 0;
+  let maxLoops = 0;
+  let pos = {
+    x: 0,
+    y: 0
+  };
+  
+  while(!isComp){
+    move = false;
+    mazeMap[pos.x][pos.y].visited = true;
+  }
+  
+  if (numLoops >= maxLoops){
+    shuffle(dirs);
+    maxLoops = Math.round(rand(height / 8));
+    numLoops = 0;
+  }
+  numLoops++;
+  for (index = 0; index < dirs.length; index++) {
+    let direction = dirs[index];
+    let nx = pos.x + modDir[direction].x;
+    let ny = pos.y + modDir[direction].y;
+} 
+    if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+          
+      //This checks if the tile has already been visited
+          if (!mazeMap[nx][ny].visited) {
+          
+            //Carves through the walls from this tile to next
+            mazeMap[pos.x][pos.y][direction] = true;
+            mazeMap[nx][ny][modDir[direction].o] = true;
+
+            //Sets Currentcell as next cells Prior visited
+            mazeMap[nx][ny].priorPos = pos;
+           
+            //Update Cell position to newly visited location
+            pos = {
+              x: nx,
+              y: ny
+            };
+            cellsVisited++;
+           
+            //Recursively call this method on the next tile
+            move = true;
+            break;
+          }
+
+      if (!move) {
+        //  If it failed to find a direction, move the current position back to the prior cell and recall the method.
+        pos = mazeMap[pos.x][pos.y].priorPos;
+      }
+      if (numCells == cellsVisited) {
+        isComp = true;
+      }
+    }
+}
