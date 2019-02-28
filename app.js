@@ -73,7 +73,7 @@ function Maze(Width, Height) {
       o: "e"
     }
   };
-
+  
   this.map = function() {
     return mazeMap;
   };
@@ -122,13 +122,15 @@ function Maze(Width, Height) {
         numLoops = 0;
       }
       numLoops++;
+      
       for (index = 0; index < dirs.length; index++) {
         var direction = dirs[index];
         var nx = pos.x + modDir[direction].x;
         var ny = pos.y + modDir[direction].y;
 
         if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
-          //Check if the tile is already visited
+          //Check if the tile was already visited
+          
           if (!mazeMap[nx][ny].visited) {
             //Carve through walls from this tile to next
             mazeMap[pos.x][pos.y][direction] = true;
@@ -142,7 +144,7 @@ function Maze(Width, Height) {
               y: ny
             };
             cellsVisited++;
-            //Recursively call this method on the next tile
+
             move = true;
             break;
           }
@@ -150,8 +152,6 @@ function Maze(Width, Height) {
       }
 
       if (!move) {
-        //  If it failed to find a direction,
-        //  move the current position back to the prior cell and Recall the method.
         pos = mazeMap[pos.x][pos.y].priorPos;
       }
       if (numCells == cellsVisited) {
