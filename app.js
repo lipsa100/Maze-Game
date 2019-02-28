@@ -33,7 +33,7 @@ function changeBrightness(factor, sprite) {
 }
 
 function displayVictoryMess(moves) {
-  document.getElementById("moves").innerHTML = "You Moved " + moves + " Steps.";
+  document.getElementById("moves").innerHTML = `You Moved ${moves} Steps.`;
   toggleVisablity("Message-Container");  
 }
 
@@ -548,8 +548,7 @@ window.onload = function() {
     console.log(completeTwo);
     isComplete();
   };
-  
-};
+  };
 
 window.onresize = function() {
   let viewWidth = $("#view").width();
@@ -574,6 +573,7 @@ function makeMaze() {
     player.unbindKeyDown();
     player = null;
   }
+
   var e = document.getElementById("diffSelect");
   difficulty = e.options[e.selectedIndex].value;
   cellSize = mazeCanvas.width / difficulty;
